@@ -1,21 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Star, Check, Flame } from "lucide-react";
-import { MENU_ITEMS, CATEGORIES } from "@/data/restaurant";
 import type { MenuItem } from "@/types";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
 import ScrollReveal from "@/components/ui/scroll-reveal";
 
-export default function MenuSection() {
+export default function MenuInteractive({ initialCategories, initialItems }: { initialCategories: string[], initialItems: MenuItem[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredItems =
     activeCategory === "All"
-      ? MENU_ITEMS
-      : MENU_ITEMS.filter((item) => item.category === activeCategory);
+      ? initialItems
+      : initialItems.filter((item) => item.category === activeCategory);
 
   return (
     <section id="menu" className="py-24 px-6 bg-[#0a0a0a]">
@@ -33,7 +32,7 @@ export default function MenuSection() {
               aria-label="Menu categories"
               className="flex flex-wrap justify-center gap-3 mt-8"
             >
-              {CATEGORIES.map((cat) => (
+              {initialCategories.map((cat) => (
                 <button
                   key={cat}
                   role="tab"

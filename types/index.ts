@@ -15,6 +15,7 @@ export interface MenuItem {
   description: string;
   image: string;
   popular?: boolean;
+  spicy?: boolean;
 }
 
 /** A cart item extends MenuItem with a quantity */

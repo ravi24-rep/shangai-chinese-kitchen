@@ -1,18 +1,19 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ShoppingBag, UtensilsCrossed, TrendingUp, Users, IndianRupee } from "lucide-react";
-import { MENU_ITEMS } from "@/data/restaurant";
+import { getMenuItems } from "@/data/index";
 import Link from "next/link";
 
-const STATS = [
-  { label: "Total Menu Items", value: String(MENU_ITEMS.length), icon: UtensilsCrossed, color: "text-primary" },
-  { label: "Today's Orders", value: "0", icon: ShoppingBag, color: "text-green-400" },
-  { label: "Today's Revenue", value: "₹0", icon: IndianRupee, color: "text-secondary" },
-  { label: "Total Customers", value: "0", icon: Users, color: "text-blue-400" },
-];
+export const dynamic = "force-dynamic";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const menuItems = await getMenuItems();
+
+  const STATS = [
+    { label: "Total Menu Items", value: String(menuItems.length), icon: UtensilsCrossed, color: "text-primary" },
+    { label: "Today's Orders", value: "0", icon: ShoppingBag, color: "text-green-400" },
+    { label: "Today's Revenue", value: "₹0", icon: IndianRupee, color: "text-secondary" },
+    { label: "Total Customers", value: "0", icon: Users, color: "text-blue-400" },
+  ];
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Welcome */}
@@ -24,11 +25,8 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {STATS.map((stat, i) => (
-          <motion.div
+          <div
             key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
             className="bg-card border border-white/5 rounded-2xl p-6"
           >
             <div className="flex items-center justify-between mb-4">
@@ -37,7 +35,7 @@ export default function AdminDashboard() {
             </div>
             <div className="text-3xl font-display font-bold mb-1">{stat.value}</div>
             <div className="text-white/40 text-sm">{stat.label}</div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -75,7 +73,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {MENU_ITEMS.slice(0, 5).map((item) => (
+              {menuItems.slice(0, 5).map((item) => (
                 <tr key={item.id} className="border-b border-white/5 last:border-0">
                   <td className="py-3 px-4 font-medium">{item.name}</td>
                   <td className="py-3 px-4 text-white/60">{item.category}</td>

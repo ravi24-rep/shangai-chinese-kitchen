@@ -4,7 +4,7 @@ import { CartProvider } from "@/lib/cart-context";
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import About from "@/components/about";
-import MenuSection from "@/components/menu-section";
+import MenuWrapper from "@/components/menu-wrapper";
 import Reviews from "@/components/reviews";
 import Location from "@/components/location";
 import OrderCTA from "@/components/order-cta";
@@ -20,7 +20,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <About />
-        <MenuSection />
+        <MenuWrapper />
         <Reviews />
         <Location />
         <OrderCTA />
