@@ -12,6 +12,7 @@ export default function CartSidebar() {
 
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [upiClicked, setUpiClicked] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -78,6 +79,7 @@ export default function CartSidebar() {
   const resetCartView = () => {
     setIsCheckingOut(false);
     setErrorMsg("");
+    setUpiClicked(false);
   };
 
   return (
@@ -196,7 +198,7 @@ export default function CartSidebar() {
                         </label>
                       </div>
                       {formData.paymentMethod === 'upi' && (
-                        <p className="text-xs text-white/40 mt-2 italic">* You will pay via UPI scanner when the delivery executive arrives.</p>
+                        <p className="text-xs text-white/40 mt-2 italic">* You will be securely redirected to your UPI app to complete the payment.</p>
                       )}
                     </div>
                   </div>
@@ -221,18 +223,33 @@ export default function CartSidebar() {
                     <ArrowRight size={18} />
                   </button>
                 ) : (
-                  <button
-                    type="submit"
-                    form="checkout-form"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#25D366] hover:bg-[#128C7E] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-green-500/20 mb-3"
-                  >
-                    {isSubmitting ? (
-                      <><Loader2 size={20} className="animate-spin" /> Processing...</>
-                    ) : (
-                      "Place Order & Notify Owner"
+                  <div className="space-y-3 mb-3">
+                    {formData.paymentMethod === 'upi' && !upiClicked && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const upiUrl = `upi://pay?pa=7200872363@upi&pn=Shangai%20Chinese%20Kitchen&am=${totalPrice}&cu=INR`;
+                          window.location.href = upiUrl;
+                          setUpiClicked(true);
+                        }}
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-xl font-bold flex items-center justify-center transition-colors shadow-lg shadow-blue-500/20"
+                      >
+                        Pay ₹{totalPrice} via UPI App
+                      </button>
                     )}
-                  </button>
+                    <button
+                      type="submit"
+                      form="checkout-form"
+                      disabled={isSubmitting || (formData.paymentMethod === 'upi' && !upiClicked)}
+                      className="w-full bg-[#25D366] hover:bg-[#128C7E] disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-green-500/20"
+                    >
+                      {isSubmitting ? (
+                        <><Loader2 size={20} className="animate-spin" /> Processing...</>
+                      ) : (
+                        "Place Order & Notify Owner"
+                      )}
+                    </button>
+                  </div>
                 )}
               </div>
             )}
