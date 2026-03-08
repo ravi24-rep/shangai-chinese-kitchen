@@ -33,6 +33,8 @@ export async function POST(request: Request) {
           id: orderId,
           customer_name: body.customerDetails.name,
           phone_number: body.customerDetails.phone,
+          delivery_address: body.delivery_address || 'Unspecified',
+          payment_method: body.payment_method || 'cash',
           items: body.items,
           total_amount: calculatedTotal,
           status: "pending"

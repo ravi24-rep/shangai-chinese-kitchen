@@ -16,9 +16,11 @@ CREATE TABLE public.menu_items (
 
 -- 2. Create Orders Table
 CREATE TABLE public.orders (
-    id TEXT PRIMARY KEY, -- e.g. ORD-001
+    id TEXT PRIMARY KEY, -- e.g. SCK-123456
     customer_name TEXT NOT NULL,
     phone_number TEXT NOT NULL,
+    delivery_address TEXT NOT NULL,
+    payment_method TEXT NOT NULL,
     items JSONB NOT NULL, -- Array of {name, qty, price}
     total_amount NUMERIC NOT NULL,
     status TEXT NOT NULL DEFAULT 'pending', -- pending, confirmed, preparing, delivered, cancelled

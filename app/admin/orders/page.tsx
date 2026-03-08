@@ -10,6 +10,8 @@ interface Order {
   id: string;
   customer_name: string;
   phone_number: string;
+  delivery_address: string;
+  payment_method: string;
   items: { name: string; quantity: number; price: number }[];
   total_amount: number;
   status: "pending" | "confirmed" | "preparing" | "delivered" | "cancelled";
@@ -165,25 +167,51 @@ export default function OrdersPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedOrder(null)} />
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-            className="relative w-full max-w-md bg-card border border-white/10 rounded-3xl p-8 shadow-2xl">
+            className="relative w-full max-w-lg bg-card border border-white/10 rounded-3xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-display font-bold">{selectedOrder.id}</h3>
               <button onClick={() => setSelectedOrder(null)} className="p-2 hover:bg-white/5 rounded-full"><X size={20} /></button>
             </div>
+            
             <div className="space-y-4">
-              <div><span className="text-white/40 text-sm">Customer:</span> <span className="font-medium ml-2">{selectedOrder.customer_name}</span></div>
-              <div><span className="text-white/40 text-sm">Phone:</span> <span className="font-medium ml-2">{selectedOrder.phone_number}</span></div>
-              <div className="border-t border-white/5 pt-4">
-                <span className="text-white/40 text-sm block mb-3">Order Items:</span>
-                {selectedOrder.items?.map((item, i) => (
-                  <div key={i} className="flex justify-between py-2 text-sm">
-                    <span>{item.name} × {item.quantity}</span>
-                    <span className="text-secondary font-bold">₹{item.price * item.quantity}</span>
-                  </div>
-                ))}
-                <div className="border-t border-white/5 mt-3 pt-3 flex justify-between font-bold">
-                  <span>Total</span>
-                  <span className="text-primary text-lg">₹{selectedOrder.total_amount}</span>
+              {/* Customer Info */}
+              <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+                <div className="grid grid-cols-2 gap-y-3">
+                    <div className="col-span-2 sm:col-span-1">
+                      <span className="text-white/40 text-xs block mb-1">Customer</span> 
+                      <span className="font-bold">{selectedOrder.customer_name}</span>
+                    </div>
+                    <div className="col-span-2 sm:col-span-1">
+                      <span className="text-white/40 text-xs block mb-1">Phone</span> 
+                      <span className="font-medium">{selectedOrder.phone_number}</span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-white/40 text-xs block mb-1">Delivery Address</span> 
+                      <span className="font-medium text-sm leading-relaxed">{selectedOrder.delivery_address || 'Not Provided'}</span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-white/40 text-xs block mb-1">Payment Method</span> 
+                      <span className="font-bold text-primary uppercase text-sm tracking-wider">
+                        {selectedOrder.payment_method === 'upi' ? 'UPI Scanner' : 'Cash on Delivery'}
+                      </span>
+                    </div>
+                </div>
+              </div>
+              
+              {/* Order Items */}
+              <div className="border border-white/5 rounded-xl p-4">
+                <span className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-3">Order Items</span>
+                <div className="space-y-2">
+                  {selectedOrder.items?.map((item, i) => (
+                    <div key={i} className="flex justify-between py-1 text-sm border-b border-white/5 last:border-0">
+                      <span>{item.quantity}x {item.name}</span>
+                      <span className="text-white/60 font-bold">₹{item.price * item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/10 flex justify-between items-center bg-black/20 -mx-4 -mb-4 p-4 rounded-b-xl">
+                  <span className="font-bold text-white/60">Total Amount</span>
+                  <span className="text-primary text-xl font-bold">₹{selectedOrder.total_amount}</span>
                 </div>
               </div>
 
