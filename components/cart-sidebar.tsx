@@ -27,7 +27,7 @@ export default function CartSidebar() {
       setErrorMsg("Please fill in all details.");
       return;
     }
-    
+
     setErrorMsg("");
     setIsSubmitting(true);
 
@@ -59,7 +59,7 @@ export default function CartSidebar() {
         msg += `- ${item.quantity}x ${item.name} (₹${item.price})\n`;
       });
       msg += `\n*Total: ₹${totalPrice}*`;
-      
+
       const whatsappUrl = `https://wa.me/${ownerNumber}?text=${encodeURIComponent(msg)}`;
       window.open(whatsappUrl, "_blank");
 
@@ -104,7 +104,7 @@ export default function CartSidebar() {
             <div className="flex items-center justify-between p-6 border-b border-white/10 shrink-0">
               <div className="flex items-center gap-3">
                 {isCheckingOut ? (
-                   <button onClick={resetCartView} className="text-white/60 hover:text-white transition-colors text-sm font-medium">← Back to Cart</button>
+                  <button onClick={resetCartView} className="text-white/60 hover:text-white transition-colors text-sm font-medium">← Back to Cart</button>
                 ) : (
                   <>
                     <ShoppingBag className="text-primary" />
@@ -125,7 +125,7 @@ export default function CartSidebar() {
             {/* Content Body */}
             <div className="flex-1 overflow-y-auto p-6">
               {!isCheckingOut ? (
-                 cart.length === 0 ? (
+                cart.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-white/40 gap-4">
                     <ShoppingBag size={48} className="opacity-20" />
                     <p className="font-medium">Your cart is empty</p>
@@ -166,7 +166,7 @@ export default function CartSidebar() {
               ) : (
                 <form id="checkout-form" onSubmit={handleCheckoutSubmit} className="flex flex-col gap-5 animate-in fade-in slide-in-from-right-4">
                   <h3 className="text-xl font-bold font-display mb-2">Delivery Details</h3>
-                  
+
                   {errorMsg && <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm font-medium">{errorMsg}</div>}
 
                   <div className="space-y-4">
@@ -213,7 +213,7 @@ export default function CartSidebar() {
                   <span className="text-white/60">Total Amount</span>
                   <span className="text-2xl font-bold font-display text-primary">₹{totalPrice}</span>
                 </div>
-                
+
                 {!isCheckingOut ? (
                   <button
                     onClick={() => setIsCheckingOut(true)}
@@ -228,7 +228,7 @@ export default function CartSidebar() {
                       <button
                         type="button"
                         onClick={() => {
-                          const upiUrl = `upi://pay?pa=7200872363@upi&pn=Shangai%20Chinese%20Kitchen&am=${totalPrice}&cu=INR`;
+                          const upiUrl = `upi://pay?pa=ravitonyja@oksbi&pn=Shangai%20Chinese%20Kitchen&am=${totalPrice}&cu=INR`;
                           window.location.href = upiUrl;
                           setUpiClicked(true);
                         }}
